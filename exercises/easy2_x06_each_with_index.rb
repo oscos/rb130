@@ -17,6 +17,18 @@ def each_with_index(arr)
   arr
 end
 
+
+# additional solution added 03/18/2022
+# came up with same solution on this date so switched it using each
+def each_with_index(arr)
+  counter = 0
+  arr.each do |el|
+    yield(el, counter)
+    counter += 1
+  end
+end
+
+
 result = each_with_index([1, 3, 6]) do |value, index|
   puts "#{index} -> #{value**index}"
 end

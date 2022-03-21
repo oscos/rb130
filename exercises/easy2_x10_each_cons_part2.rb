@@ -29,6 +29,20 @@ def each_cons(arr, num)
   nil
 end
 
+# answer added 03/18/2022
+def each_cons(arr, n)
+  counter = 0
+  counter2 = n - 1
+
+  while counter2 < arr.size
+    yield(*arr[counter..counter2])
+    counter += 1
+    counter2 += 1
+  end
+
+  nil
+end
+
 hash = {}
 each_cons([1, 3, 6, 10], 1) do |value|
   hash[value] = true

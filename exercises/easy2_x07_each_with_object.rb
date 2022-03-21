@@ -18,6 +18,28 @@ def each_with_object(arr, obj_type)
   result
 end
 
+# added solution 03/18/2022
+def each_with_object(arr, obj)
+  counter = 0
+  
+  while counter < arr.size
+    current_element = arr[counter]
+    yield(current_element, obj)
+    counter += 1
+  end
+
+  obj
+end
+
+# added solution 03/18/2022
+def each_with_object(arr, obj)
+  arr.each do |el|
+    yield(el, obj)
+  end
+  obj
+end
+
+
 result = each_with_object([1, 3, 5], []) do |value, list|
   list << value**2
 end

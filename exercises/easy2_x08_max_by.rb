@@ -23,6 +23,33 @@ def max_by(arr)
   final_result
 end
 
+# added solution 03/18/2022
+def max_by(arr)
+  result = nil
+
+  arr.each.with_index do |num, idx| 
+    if idx == 0
+      result = num
+    elsif yield(result) < yield(num)
+      result = num
+    end
+  end
+
+  result
+end
+
+# added solution 03/18/2022
+def max_by(arr)
+  return nil if arr.empty?
+
+  result = arr[0]
+
+  arr.each do |num|
+    result = num if yield(result) < yield(num)
+  end
+
+  result
+end
 
 p max_by([1, 5, 3]) { |value| value + 2 } == 5
 p max_by([1, 5, 3]) { |value| 9 - value } == 1

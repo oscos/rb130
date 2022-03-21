@@ -24,3 +24,14 @@ step(1, 10, 3) { |value| puts "value = #{value}" }
 # value = 4
 # value = 7
 # value = 10
+
+
+# additional solution added 03/18/2022
+def step2(txt_start, txt_end, txt_step)
+  while txt_start <= txt_end
+    yield(txt_start)
+    txt_start += txt_step
+  end
+end
+
+step2(1, 10, 3) { |value| puts "value = #{value}" }

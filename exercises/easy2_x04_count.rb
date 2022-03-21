@@ -18,6 +18,15 @@ def count(*arr)
   result.size
 end
 
+# addtional solution added 03/18/2022
+def count(*args)
+  counter = 0
+  args.each do |el|
+    counter += 1 if yield(el)
+  end
+  counter
+end
+
 p count(1, 3, 6) { |value| value.odd? } == 2
 p count(1, 3, 6) { |value| value.even? } == 1
 p count(1, 3, 6) { |value| value > 6 } == 0

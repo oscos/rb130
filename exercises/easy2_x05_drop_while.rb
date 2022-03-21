@@ -18,6 +18,20 @@ def drop_while(arr)
   result
 end
 
+# solution added 03/18/2022
+def drop_while(arr)
+  counter = 0
+  flag = false
+  arr.each.with_index do |el, idx|
+    unless yield(el)
+      flag = true
+      counter = idx
+      break
+    end
+  end
+  flag ? arr[counter..-1] : []
+end
+
 p drop_while([1, 3, 5, 6]) { |value| value.odd? } == [6]
 p drop_while([1, 3, 5, 6]) { |value| value.even? } == [1, 3, 5, 6]
 p drop_while([1, 3, 5, 6]) { |value| true } == []
