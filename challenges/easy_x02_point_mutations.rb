@@ -65,6 +65,27 @@ class DNA
 
 end
 
+# additional solution added 03/28/2022
+class DNA
+  def initialize(dna1)
+    @dna1 = dna1
+  end
+
+  def hamming_distance(dna2)
+    counter1 = 0
+    counter2 = 0
+
+    @dna1.chars.each_with_index do |el, idx|
+      break if counter2 == dna2.length
+
+      counter1 += 1 if el != dna2[idx]
+      counter2 += 1
+    end
+
+    counter1
+  end
+end
+
 # str1 = 'GAGCCTACTAACGGGAT'
 # str2 = 'CATCGTAATGACGGCCT'
 
