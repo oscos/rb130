@@ -35,5 +35,18 @@ class Anagram
 
 end
 
+# additional answer added 03/29/2022
+class Anagram
+  def initialize(word)
+    @word = word
+  end
+
+  def match(arr)
+    arr.reject { |w| w.downcase == @word.downcase }
+       .select { |v| v if v.downcase.chars.sort == @word.downcase.chars.sort }
+  end
+end
+
+
 # detector = Anagram.new('diaper')
 # detector.match(%w(hello world zombies pants))
