@@ -1,10 +1,8 @@
 
 ### Closures
-A closure is a general programming concept that allows programmers to save a chunk of code that can later be executed.
+A closure is a general programming concept that allows programmers to save a chunk of code that can later be executed. 
 
-It’s called a closure because it binds the surrounding artifacts that were in scope at the time and location of where and when the closure was created. 
-
-Thus forming an enclosure around everything so that the artifacts can be referenced when the closure is executed later. 
+It’s called a closure because it binds the surrounding artifacts that were in scope at the time and location of where and when the closure was created. Thus forming an enclosure around everything so that the artifacts can be referenced when the closure is executed later. 
 
 The references or access that a closure retains to these artifacts or in-scope items is known as its binding. The binding includes things like variables, methods, and objects.
 
@@ -46,7 +44,7 @@ end
 exec_block { puts "Hello"}
 ```
 
-In the example above, the `exec_block` method has been defined on `lines 1-4`, and invoked with a block on `line 6`.  Since the method has been defined with the `yield` keyword, the block is executed. This results in the method outputing "Hello" followed by `World!`, and returns `nil`.
+In the example above, the `exec_block` method has been defined on `lines 1-4`, and invoked with a block on `line 6`.  Since the method has been defined with the `yield` keyword, the block code is executed which prints `"Hello"` and returns `nil`. The `exec_block` method then out `World!`, and returns `nil`.
 
 **block_given?**
 
@@ -85,4 +83,4 @@ end
 yield_with_block_no_error { puts "Hello World!"}
 ```
 
-In the example above on line 6, we invoke the `yield_with_block_no_error` method with a block. `yield_with_block_no_error` has been defined with `yield` and wrapped in a conditional with the `Kernel#block_given?` method to ensure Ruby does not raise a `LocalJumpError` in case the method is invoked without a block.  However, since the method is invoked with a block, `block_given?` returns `true` and `yield` is called. This executes the block code and outputs, `Hello World!` and returns `nil`.  Next the `yield_with_block_no_error` method itself outputs, `Goodnight World!` and returns `nil`.
+In the example above on line 6, we invoke the `yield_with_block_no_error` method with a block. The method has been defined with `yield` and wrapped in a conditional with the `Kernel#block_given?` method to ensure Ruby does not raise a `LocalJumpError` in case the method is invoked without a block.  However, since a block was passed to the method, `block_given?` returns `true` and `yield` is called. This executes the block code and outputs, `Hello World!` and returns `nil`.  Next the `yield_with_block_no_error` method itself outputs, `Goodnight World!` and returns `nil`.
