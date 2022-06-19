@@ -116,7 +116,7 @@ The `end` method delimiter on line 4 ends the method and since `puts` is the las
 
 #### Yielding with an argument
 
-One way in which blocks are similar to methods is they too can take in arguments. These arguments can be assigned as block parameters when the block is invoked.  This provides users with flexibility when invoking a method.  They can assign the block parameters to local variables within the block which can then be used to output a message or pass the local variables as arguments to other methods.
+One way in which blocks are similar to methods is they too can take in arguments. When `yield` is called, we can pass in arguments and assigned them to the block parameters when the block is invoked. This provides users with flexibility when invoking a method as they can assign the block parameters to local variables. These block local variables can then be used to output a message or pass the local variables as arguments to other methods.
 
 ```ruby
 def greeting(name)
