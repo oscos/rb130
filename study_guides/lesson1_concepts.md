@@ -11,9 +11,9 @@ Because the closure drags around its context or environment, it can access the a
 
 In Ruby there are three ways to implement a closure:
 
-1. Creating an object from a proc class
+1. Creating an object from the Proc class
 2. Using Blocks
-3. Using Lambad
+3. Using Lambdas
 
 ## Calling Methods with Blocks
 
@@ -92,7 +92,7 @@ yield_with_block_no_error { puts "Hello World!"}
 
 In the example above on line 6, we invoke the `yield_with_block_no_error` method with a block. The method has been defined with `yield` and wrapped in a conditional with the `Kernel#block_given?` method to ensure Ruby does not raise a `LocalJumpError` in case the method is invoked without a block.  However, since a block was passed to the method, `block_given?` returns `true` and `yield` is called. This executes the block code and outputs, `"Hello World!"` and returns `nil`.  Next the `yield_with_block_no_error` method itself outputs, `"Goodnight World!"` and returns `nil`.
 
-#### Passing execution to th block
+#### Passing execution to the block
 
 ```ruby
 def greeting(name)
@@ -115,3 +115,15 @@ Execution continues in the method implementation on line 3 which outputs `"How a
 The `end` method delimiter on line 4 ends the method and since `puts` is the last line of the `greeting` method, this method returns `nil`.
 
 #### Yielding with an argument
+
+One way in which blocks are similar to methods is they too can take in arguments. These arguments can be assigned as block parameters when the block is invoked.  This provides users with flexibility when invoking a method.  They can assign the block parameters to local variables within the block which can then be used to output a message or pass the local variables as arguments to other methods.
+
+```ruby
+def greeting(name)
+  yield(name) if block_given?
+  puts "How the heck are ya?!"
+end
+
+name = "Tom"
+greeting(name) { |n| puts "Hello #{n}"}
+```
