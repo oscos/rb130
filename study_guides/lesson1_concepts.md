@@ -38,22 +38,22 @@ One way that we can ensure that the passed-in block argument is invoked from wit
 This allows a programmer to inject additional code into the method by passing in a block of code as an argument to the method, all without altering the method implementation.
 
 ```ruby
-def ingore_block
-  puts "World!"
-end
-
-ingore_block { puts "Hello"}
+1 def ingore_block
+2   puts "World!"
+3 end
+4
+5 ingore_block { puts "Hello"}
 ```
 
 In the example above, the `ignore_block` method has been defined on `lines 1-3`, and invoked with a block on `line 5`. However, because the method has been defined without the `yield` keyword, the block is completely ignored and the method simply outputs `"World!"` and returns `nil`.
 
 ```ruby
-def exec_block
-  yield
-  puts "World!"
-end
-
-exec_block { puts "Hello"}
+1 def exec_block
+2   yield
+3   puts "World!"
+4 end
+5
+6 exec_block { puts "Hello"}
 ```
 
 In the example above, the `exec_block` method has been defined on `lines 1-4`, and invoked with a block on `line 6`. Since the method has been defined with the `yield` keyword, the block code is executed which outputs `"Hello"` and returns `nil`. The `exec_block` method then outputs `"World!"`, and returns `nil`.
@@ -63,34 +63,34 @@ In the example above, the `exec_block` method has been defined on `lines 1-4`, a
 If a method has been defined with `yield`, the `Kernel#block_given?` method allows the programmer to call a method with and without a block. We do this by wrapping the `yield` keyword in a conditional using `Kernel#block_given?`. This ensures Ruby will not raise a `LocalJumpError` if the method is invoked without a block.
 
 ```ruby
-def yield_without_block_error
-  yield
-  puts "Hello World!"
-end
-
-yield_without_block_error
+1 def yield_without_block_error
+2   yield
+3   puts "Hello World!"
+4 end
+5
+6 yield_without_block_error
 ```
 
 In the example above on line 6, we invoke the `yield_without_block_error` method without a block. Since `yield_without_block_error` has been defined with the `yield` keyword, the method expects a block to be passed in. Since no block has been passed to the method, Ruby raises a `LocalJumpError`.
 
 ```ruby
-def yield_without_block_no_error
-  yield if block_given?
-  puts "Hello World!"
-end
-
-yield_without_block_no_error
+1 def yield_without_block_no_error
+2   yield if block_given?
+3   puts "Hello World!"
+4 end
+5
+6 yield_without_block_no_error
 ```
 
 In the example above on line 6, we invoke the `yield_without_block_no_error` method without a block. Since `yield_without_block_no_error` has been defined with `yield` and wrapped in a conditional with the `Kernel#block_given?` method, Ruby does not raise a `LocalJumpError`. This is because `block_given?` is `false` and `yield` is not called. Therefore the method simply outputs, `"Hello World!"` and returns `nil`.
 
 ```ruby
-def yield_with_block_no_error
-  yield if block_given?
-  puts "Goodnight World!"
-end
-
-yield_with_block_no_error { puts "Hello World!"}
+1 def yield_with_block_no_error
+2   yield if block_given?
+3   puts "Goodnight World!"
+4 end
+5
+6 yield_with_block_no_error { puts "Hello World!"}
 ```
 
 In the example above on line 6, we invoke the `yield_with_block_no_error` method with a block. The method has been defined with `yield` and wrapped in a conditional with the `Kernel#block_given?` method to ensure Ruby does not raise a `LocalJumpError` in case the method is invoked without a block. However, since a block was passed to the method, `block_given?` returns `true` and `yield` is called. This executes the block code and outputs, `"Hello World!"` and returns `nil`. Next the `yield_with_block_no_error` method itself outputs, `"Goodnight World!"` and returns `nil`.
@@ -98,13 +98,13 @@ In the example above on line 6, we invoke the `yield_with_block_no_error` method
 #### Passing execution to the block
 
 ```ruby
-def greeting(name)
-  yield if block_given?
-  puts "How are ya #{name}!"
-end
-
-name = "Tom"
-greeting(name) { puts "Hello there!"}
+1 def greeting(name)
+2   yield if block_given?
+3   puts "How are ya #{name}!"
+4 end
+5
+6 name = "Tom"
+7 greeting(name) { puts "Hello there!"}
 ```
 
 1. Execution starts at method invocation, on line 7. The `greeting` method is invoked with two arguments: a string referenced by `name`, and a block. The block is not part of the method definition and therefore is an implicit parameter.
@@ -120,20 +120,20 @@ Similar to methods, we can pass arguments to blocks. We do so by calling `yield`
 To avoid variable shadowing, block parameter names should have unique names and not conflict with the names of local variables initialized in the block's outer scope.
 
 ```ruby
-1 	def full_name(fname, lname)
-2 	  full_name = "#{fname} #{lname}"
-3 	  if block_given?
-4 		  yield(full_name)
-5 	  end
-6 	  full_name
-7 	end
+1  def full_name(fname, lname)
+2    full_name = "#{fname} #{lname}"
+3    if block_given?
+4 	   yield(full_name)
+5    end
+6    full_name
+7  end
 8
-9 	first_name = "Oscar"
-10	last_name = "Cortes"
+9  first_name = "Oscar"
+10 last_name = "Cortes"
 11
-12	full_name(first_name, last_name) do |name|
-13	  puts "#{name}"
-14	}
+12 full_name(first_name, last_name) do |name|
+13   puts "#{name}"
+14 end
 ```
 
 1.  Execution starts at method invocation, on line 12. The `full_name` method is invoked with three arguments: two strings referenced by `first_name` and `last_name`, and a block. The block is not part of the method definition and therefore is an implicit parameter.
@@ -154,13 +154,13 @@ To avoid variable shadowing, block parameter names should have unique names and 
 Unlike `methods`, and `lambdas` which have have `strict arity`, `blocks` and `procs` have `lenient arity`. Arity refers to the rule regarding the number of arguments that one must pass to a `block`, `proc`, or `lambda`. With `strict arity`, the number of arguments must match the number of parameters that have been defined for a `method` or `lambda`. Otherwise Ruby will raise an `ArgumentError`. With `lenient arity`, it's possible to pass less or extra arguments over to `blocks` and `procs` without Ruby raising an error.
 
 ```ruby
-def passing_exta_args_to_block
-  yield("one", "two")
-end
-
-passing_extra_args_to_block do |block_param1|
-  puts "#{block_param1}"
-end
+1 def passing_exta_args_to_block
+2   yield("one", "two")
+3 end
+4
+5 passing_extra_args_to_block do |block_param1|
+6  puts "#{block_param1}"
+7 end
 ```
 
 In the example above, we invoke the `passing_extra_args_to_block` method with a block. The block is not part of the method definition and therefore is an implicit parameter.
@@ -168,13 +168,13 @@ In the example above, we invoke the `passing_extra_args_to_block` method with a 
 On line 2 we `yield` to the block with two arguments. Although the block has been defined with only one block parameter, ruby does not raise an `ArgumentError`. Instead the extra argument passed to the block is ignored and the code outputs `one`.
 
 ```ruby
-def passing_less_args_to_block
-  yield("one")
-end
-
-passing_less_args_to_block do |block_param1, block_param2|
-  puts "#{block_param1} #{block_param2}"
-end
+1 def passing_less_args_to_block
+2   yield("one")
+4 end
+5
+6 passing_less_args_to_block do |block_param1, block_param2|
+7   puts "#{block_param1} #{block_param2}"
+8 end
 ```
 
 In the example above, we invoke the `passing_less_args_to_block` method with a block. The block is not part of the method definition and therefore is an implicit parameter.
