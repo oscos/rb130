@@ -151,7 +151,7 @@ To avoid variable shadowing, block parameter names should have unique names and 
 
 #### Arity
 
-Unlike `methods`, and `lambdas` which have have `strict arity`, `blocks` and `procs` have `lenient arity`. Arity refers to the rule regarding the number of arguments that one must pass to a `block`, `proc`, or `lambda`. With `strict arity`, the number of arguments must match the number of parameters that have been defined for a `method` or `lambda`. Otherwise Ruby will raise an `ArgumentError`. With `lenient arity`, it's possible to pass less or extra arguments over to `blocks` and `procs` without Ruby raising an error.
+Unlike `methods`, and `lambdas` which have have `strict arity`, `blocks` and `procs` have `lenient arity`. Arity refers to the rule regarding the number of arguments that one must pass to a `block`, `proc`, or `lambda`. With `strict arity`, the number of arguments must be equal to the number of parameters that have been defined for a `method` or `lambda`. Otherwise Ruby will raise an `ArgumentError`. With `lenient arity`, it's possible to pass less or extra arguments over to `blocks` and `procs` without Ruby raising an error.
 
 ```ruby
 1 def passing_exta_args_to_block
@@ -179,4 +179,4 @@ On line 2 we `yield` to the block with two arguments. Although the block has bee
 
 In the example above, we invoke the `passing_less_args_to_block` method with a block. The block is not part of the method definition and therefore is an implicit parameter.
 
-On line 2 we `yield` to the block with one argument. Although the block has been defined with with two block parameters, ruby does not raise an `ArgumentError`. Instead the block local variable `block_param2` is `nil`. The string interpolation converts `nil` to an empty string and the code outputs the string `one ` containing an empty space at the end.
+On line 2 we `yield` to the block with one argument. Although the block has been defined with with two block parameters, ruby does not raise an `ArgumentError`. Instead the block local variable `block_param2` referenced on line 7 is `nil`. The string interpolation converts `nil` to an empty string and the code outputs the string `one ` containing an empty space at the end.
