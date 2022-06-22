@@ -18,6 +18,10 @@ In Ruby there are three ways to implement a closure:
 
 ## Calling Methods with Blocks
 
+In Ruby every method takes a block as an implicit parameter. However, a method's implementation determines whether or not the block will be executed.
+
+<hr>
+
 ```ruby
 [1, 2, 3, 4, 5].select {|n| n % 2 == 0 }
 
@@ -25,7 +29,7 @@ In Ruby there are three ways to implement a closure:
 
 The code above is an example of a method invocation with a block. The Array object `[1, 2, 3, 4, 5]` is the calling object. The `Array#select` is the method being invoked. The `{|n| n % 2 == 0 }` is the block (chunk of code) which is passed as an argument to the `Array#select` method.
 
-In Ruby every method takes a block as an implicit parameter. However, a method's implementation determines whether or not the block will be executed.
+<hr>
 
 ## Writing Methods with Blocks
 
