@@ -29,7 +29,7 @@ In Ruby every method takes a block as an implicit parameter. However, a method's
 
 ## Writing Methods with Blocks
 
-#### Yielding
+### Yielding
 
 In Ruby every method takes a block as an implicit parameter. However, a method's implementation determines whether or not the block will be executed.
 
@@ -58,7 +58,7 @@ In the example above, the `ignore_block` method has been defined on `lines 1-3`,
 
 In the example above, the `exec_block` method has been defined on `lines 1-4`, and invoked with a block on `line 6`. Since the method has been defined with the `yield` keyword, the block code is executed which outputs `"Hello"` and returns `nil`. The `exec_block` method then outputs `"World!"`, and returns `nil`.
 
-#### block_given?
+### block_given?
 
 If a method has been defined with `yield`, the `Kernel#block_given?` method allows the programmer to call a method with and without a block. We do this by wrapping the `yield` keyword in a conditional using `Kernel#block_given?`. This ensures Ruby will not raise a `LocalJumpError` if the method is invoked without a block.
 
@@ -95,7 +95,13 @@ In the example above on line 6, we invoke the `yield_without_block_no_error` met
 
 In the example above on line 6, we invoke the `yield_with_block_no_error` method with a block. The method has been defined with `yield` and wrapped in a conditional with the `Kernel#block_given?` method to ensure Ruby does not raise a `LocalJumpError` in case the method is invoked without a block. However, since a block was passed to the method, `block_given?` returns `true` and `yield` is called. This executes the block code and outputs, `"Hello World!"` and returns `nil`. Next the `yield_with_block_no_error` method itself outputs, `"Goodnight World!"` and returns `nil`.
 
-#### Passing execution to the block
+<hr>
+
+### Passing execution to the block
+
+`yield` is a keyword that executes a block from within a method. It passes execution from the method implementation over to the block that's passed into a method during method invocation. Being able to distinguish between method implementation and method invocation is critical to understanding the sequence of code execution when yielding to a block.
+
+<hr>
 
 ```ruby
 1 def greeting(name)
@@ -107,17 +113,19 @@ In the example above on line 6, we invoke the `yield_with_block_no_error` method
 7 greeting(name) { puts "Hello there!"}
 ```
 
+In the example above, line 7 is the method invocation while lines 1-4 defines the method implementation.
+
 1. Execution starts at method invocation, on line 7. The `greeting` method is invoked with two arguments: a string referenced by `name`, and a block. The block is not part of the method definition and therefore is an implicit parameter.
 2. Execution moves to line 1, where the method local variable `name` is assigned to the string `"Tom"`. The block is passed implicitly and not assigned to a variable.
 3. Execution continues to line 2 which is the first line of the method implementation, where `Kernel#block_given?` checks to see if a block was passed. Since this returns true, yield executes the block on line 7, which outputs `"Hello there!"`
 4. Execution continues in the method implementation on line 3 which outputs `"How are ya Tom!"`
 5. The `end` method delimiter on line 4 ends the method and since `puts` is the last line of the `greeting` method, this method returns `nil`.
 
-#### Yielding with an argument
+<hr>
 
-Similar to methods, we can pass arguments to blocks. We do so by calling `yield` with argument(s). These arguments can be assigned to block parameters and referenced within the block as local variables which are scoped at the block level. This provides flexibility as it lets the user decide how to use the block local variables. For example, they can use the block local variables to output a message, or they can pass them over to other methods as arguments.
+### Yielding with an argument
 
-To avoid variable shadowing, block parameter names should have unique names and not conflict with the names of local variables initialized in the block's outer scope.
+Similar to methods, we can pass arguments to blocks. We do so by calling `yield` with argument(s). These arguments can be assigned to block parameters and referenced within the block as local variables which are scoped at the block level. This provides flexibility as it lets the user decide how to use the block local variables. For example, they can use the block local variables to output a message, or they can pass them over to other methods as arguments. Note that to avoid variable shadowing, block parameter names should have unique names and not conflict with the names of local variables initialized in the block's outer scope.
 
 ```ruby
 1  def full_name(fname, lname)
@@ -149,9 +157,13 @@ To avoid variable shadowing, block parameter names should have unique names and 
 11. Line 6 returns the value of the concatenated string to line 12.
 12. The program ends without using the return value of the `full_name` method.
 
-#### Arity
+<hr>
+
+### Arity
 
 Unlike `methods`, and `lambdas` which have have `strict arity`, `blocks` and `procs` have `lenient arity`. Arity refers to the rule regarding the number of arguments that one must pass to a `block`, `proc`, or `lambda`. With `strict arity`, the number of arguments must be equal to the number of parameters that have been defined for a `method` or `lambda`. Otherwise Ruby will raise an `ArgumentError`. With `lenient arity`, it's possible to pass less or extra arguments over to `blocks` and `procs` without Ruby raising an error.
+
+<hr>
 
 ```ruby
 1 def passing_exta_args_to_block
@@ -167,6 +179,8 @@ In the example above, we invoke the `passing_extra_args_to_block` method with a 
 
 On line 2 we `yield` to the block with two arguments. Although the block has been defined with only one block parameter, ruby does not raise an `ArgumentError`. Instead the extra argument passed to the block is ignored and the code outputs `one`.
 
+<hr>
+
 ```ruby
 1 def passing_less_args_to_block
 2   yield("one")
@@ -180,3 +194,43 @@ On line 2 we `yield` to the block with two arguments. Although the block has bee
 In the example above, we invoke the `passing_less_args_to_block` method with a block. The block is not part of the method definition and therefore is an implicit parameter.
 
 On line 2 we `yield` to the block with one argument. Although the block has been defined with with two block parameters, ruby does not raise an `ArgumentError`. Instead the block local variable `block_param2` referenced on line 7 is `nil`. The string interpolation converts `nil` to an empty string and the code outputs the string `one ` containing an empty space at the end.
+
+<hr>
+
+### Return value of yielding to the block
+
+Similar to methods, blocks can return a value. The return value of a block is based on the last evaluated expression within the block and can be assigned to a local variable within the method.
+
+<hr>
+
+```ruby
+1  def block_demo(arr)
+2     block_return_value = yield(arr)
+3     puts "The block's return value is: #{block_return_value}"
+4  end
+5
+6  alpha = ['a', 'b', 'c']
+7
+8  non_mutating(alpha) { |list| list.first }
+9  end
+```
+
+On line 2 in the example above, we call `yield` with an argument which yields to the block and executes the block code. Since `list.first` is the last evaluated expression within the block, the block returns `a`. The local variable `block_return_value` in the `block_demo` method implementation is assigned to the block's return value and now references `a`. We then include `block_return_value` within string interpolation to output, `"The block's return value is: a"`.
+
+<hr>
+
+In addition to returning a value, blocks like methods can also mutate the passed-in argument with a destructive method.
+
+```ruby
+alpha = ['a', 'b', 'c']
+
+def mutating_block_demo(arr)
+    puts "Array Before: #{arr}"
+    puts "Block's return value: #{yield(arr)}"
+    puts "Array After: #{arr}"
+end
+
+mutating_block_demo(alpha) do |list|
+    list.shift
+end
+```
