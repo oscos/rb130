@@ -217,7 +217,7 @@ On line 2 we `yield` to the block with one argument. Although the block has been
 
 ### Return value of yielding to the block
 
-Similar to methods, blocks can return a value. The return value of a block is based on the last evaluated expression within the block and can be assigned to a local variable within the method.
+Similar to methods, blocks can return a value or mutate the passed-in argument with a destructive method. The return value of a block is based on the last evaluated expression within the block and can be assigned to a local variable within the method.
 
 <hr>
 
@@ -233,22 +233,13 @@ Similar to methods, blocks can return a value. The return value of a block is ba
 9  end
 ```
 
-On line 2 in the example above, we call `yield` with an argument which yields to the block and executes the block code. Since `list.first` is the last evaluated expression within the block, the block returns `a`. The local variable `block_return_value` in the `block_demo` method implementation is assigned to the block's return value and now references `a`. We then include `block_return_value` within string interpolation to output, `"The block's return value is: a"`.
+On line 2 in the example above, we call `yield` with an argument which yields to the block and executes the block code. Since `list.first` is the last evaluated expression within the block, the block returns `a`. The local variable `block_return_value` in the `block_demo` method implementation is assigned to the block's return value and now references `a`. We use string interpoloation and include `block_return_value` to output, `"The block's return value is: a"`.
 
 <hr>
 
-In addition to returning a value, blocks like methods can also mutate the passed-in argument with a destructive method.
+### When to use blocks in your own Methods
 
-```ruby
-alpha = ['a', 'b', 'c']
+Two main cases where blocks can be usefule are
 
-def mutating_block_demo(arr)
-    puts "Array Before: #{arr}"
-    puts "Block's return value: #{yield(arr)}"
-    puts "Array After: #{arr}"
-end
-
-mutating_block_demo(alpha) do |list|
-    list.shift
-end
-```
+1. To defer some implementation code to the meothod invocation decision
+2.
