@@ -233,13 +233,14 @@ Similar to methods, blocks can return a value or mutate the passed-in argument w
 9  end
 ```
 
-On line 2 in the example above, we call `yield` with an argument which yields to the block and executes the block code. Since `list.first` is the last evaluated expression within the block, the block returns `a`. The local variable `block_return_value` in the `block_demo` method implementation is assigned to the block's return value and now references `a`. We use string interpoloation and include `block_return_value` to output, `"The block's return value is: a"`.
+On line 2 in the example above, we call `yield` with an argument which yields to the block and executes the block code. Since `list.first` is the last evaluated expression within the block, the block returns `a`. Within the `block_demo` method, the local variable `block_return_value` is assigned to the block's return value and now references `a`. We use string interpoloation and include `block_return_value` to output, `"The block's return value is: a"`.
 
 <hr>
 
 ### When to use blocks in your own Methods
 
-Two main cases where blocks can be usefule are
+Two main uses cases for blocks are:
 
-1. To defer some implementation code to the meothod invocation decision
-2.
+1. To defer some implementation code to the method invocation decision.
+
+2. Method that need to perform some "before" and "after" actions - sandwich code.
