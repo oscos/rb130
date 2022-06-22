@@ -41,6 +41,8 @@ One way that we can ensure that the passed-in block argument is invoked from wit
 
 This allows a programmer to inject additional code into the method by passing in a block of code as an argument to the method, all without altering the method implementation.
 
+<hr>
+
 ```ruby
 1 def ingore_block
 2   puts "World!"
@@ -50,6 +52,8 @@ This allows a programmer to inject additional code into the method by passing in
 ```
 
 In the example above, the `ignore_block` method has been defined on `lines 1-3`, and invoked with a block on `line 5`. However, because the method has been defined without the `yield` keyword, the block is completely ignored and the method simply outputs `"World!"` and returns `nil`.
+
+<hr>
 
 ```ruby
 1 def exec_block
@@ -62,9 +66,13 @@ In the example above, the `ignore_block` method has been defined on `lines 1-3`,
 
 In the example above, the `exec_block` method has been defined on `lines 1-4`, and invoked with a block on `line 6`. Since the method has been defined with the `yield` keyword, the block code is executed which outputs `"Hello"` and returns `nil`. The `exec_block` method then outputs `"World!"`, and returns `nil`.
 
+<hr>
+
 ### block_given?
 
 If a method has been defined with `yield`, the `Kernel#block_given?` method allows the programmer to call a method with and without a block. We do this by wrapping the `yield` keyword in a conditional using `Kernel#block_given?`. This ensures Ruby will not raise a `LocalJumpError` if the method is invoked without a block.
+
+<hr>
 
 ```ruby
 1 def yield_without_block_error
@@ -77,6 +85,8 @@ If a method has been defined with `yield`, the `Kernel#block_given?` method allo
 
 In the example above on line 6, we invoke the `yield_without_block_error` method without a block. Since `yield_without_block_error` has been defined with the `yield` keyword, the method expects a block to be passed in. Since no block has been passed to the method, Ruby raises a `LocalJumpError`.
 
+<hr>
+
 ```ruby
 1 def yield_without_block_no_error
 2   yield if block_given?
@@ -87,6 +97,8 @@ In the example above on line 6, we invoke the `yield_without_block_error` method
 ```
 
 In the example above on line 6, we invoke the `yield_without_block_no_error` method without a block. Since `yield_without_block_no_error` has been defined with `yield` and wrapped in a conditional with the `Kernel#block_given?` method, Ruby does not raise a `LocalJumpError`. This is because `block_given?` is `false` and `yield` is not called. Therefore the method simply outputs, `"Hello World!"` and returns `nil`.
+
+<hr>
 
 ```ruby
 1 def yield_with_block_no_error
@@ -130,6 +142,8 @@ In the example above, line 7 is the method invocation while lines 1-4 defines th
 ### Yielding with an argument
 
 Similar to methods, we can pass arguments to blocks. We do so by calling `yield` with argument(s). These arguments can be assigned to block parameters and referenced within the block as local variables which are scoped at the block level. This provides flexibility as it lets the user decide how to use the block local variables. For example, they can use the block local variables to output a message, or they can pass them over to other methods as arguments. Note that to avoid variable shadowing, block parameter names should have unique names and not conflict with the names of local variables initialized in the block's outer scope.
+
+<hr>
 
 ```ruby
 1  def full_name(fname, lname)
