@@ -44,11 +44,11 @@ This allows a programmer to inject additional code into the method by passing in
 <hr>
 
 ```ruby
-1 def ingore_block
-2   puts "World!"
-3 end
+1  def ingore_block
+2    puts "World!"
+3  end
 4
-5 ingore_block { puts "Hello"}
+5  ingore_block { puts "Hello"}
 ```
 
 In the example above, the `ignore_block` method has been defined on `lines 1-3`, and invoked with a block on `line 5`. However, because the method has been defined without the `yield` keyword, the block is completely ignored and the method simply outputs `"World!"` and returns `nil`.
@@ -56,12 +56,12 @@ In the example above, the `ignore_block` method has been defined on `lines 1-3`,
 <hr>
 
 ```ruby
-1 def exec_block
-2   yield
-3   puts "World!"
-4 end
+1  def exec_block
+2    yield
+3    puts "World!"
+4  end
 5
-6 exec_block { puts "Hello"}
+6  exec_block { puts "Hello"}
 ```
 
 In the example above, the `exec_block` method has been defined on `lines 1-4`, and invoked with a block on `line 6`. Since the method has been defined with the `yield` keyword, the block code is executed which outputs `"Hello"` and returns `nil`. The `exec_block` method then outputs `"World!"`, and returns `nil`.
@@ -75,41 +75,41 @@ If a method has been defined with `yield`, the `Kernel#block_given?` method allo
 <hr>
 
 ```ruby
-1 def yield_without_block_error
-2   yield
-3   puts "Hello World!"
-4 end
-5
-6 yield_without_block_error
+def yield_without_block_error
+  yield
+  puts "Hello World!"
+end
+
+yield_without_block_error
 ```
 
-In the example above on line 6, we invoke the `yield_without_block_error` method without a block. Since `yield_without_block_error` has been defined with the `yield` keyword, the method expects a block to be passed in. Since no block has been passed to the method, Ruby raises a `LocalJumpError`.
+In the example above, we invoke the `yield_without_block_error` method without a block. Since `yield_without_block_error` has been defined with the `yield` keyword, the method expects a block to be passed in. Since no block has been passed to the method, Ruby raises a `LocalJumpError`.
 
 <hr>
 
 ```ruby
-1 def yield_without_block_no_error
-2   yield if block_given?
-3   puts "Hello World!"
-4 end
-5
-6 yield_without_block_no_error
+def yield_without_block_no_error
+  yield if block_given?
+  puts "Hello World!"
+end
+
+yield_without_block_no_error
 ```
 
-In the example above on line 6, we invoke the `yield_without_block_no_error` method without a block. Since `yield_without_block_no_error` has been defined with `yield` and wrapped in a conditional with the `Kernel#block_given?` method, Ruby does not raise a `LocalJumpError`. This is because `block_given?` is `false` and `yield` is not called. Therefore the method simply outputs, `"Hello World!"` and returns `nil`.
+In the example above, we invoke the `yield_without_block_no_error` method without a block. Since `yield_without_block_no_error` has been defined with `yield` and wrapped in a conditional with the `Kernel#block_given?` method, Ruby does not raise a `LocalJumpError`. This is because `block_given?` is `false` and `yield` is not called. Therefore the method simply outputs, `"Hello World!"` and returns `nil`.
 
 <hr>
 
 ```ruby
-1 def yield_with_block_no_error
-2   yield if block_given?
-3   puts "Goodnight World!"
-4 end
-5
-6 yield_with_block_no_error { puts "Hello World!"}
+def yield_with_block_no_error
+  yield if block_given?
+  puts "Goodnight World!"
+end
+
+yield_with_block_no_error { puts "Hello World!"}
 ```
 
-In the example above on line 6, we invoke the `yield_with_block_no_error` method with a block. The method has been defined with `yield` and wrapped in a conditional with the `Kernel#block_given?` method to ensure Ruby does not raise a `LocalJumpError` in case the method is invoked without a block. However, since a block was passed to the method, `block_given?` returns `true` and `yield` is called. This executes the block code and outputs, `"Hello World!"` and returns `nil`. Next the `yield_with_block_no_error` method itself outputs, `"Goodnight World!"` and returns `nil`.
+In the example above, we invoke the `yield_with_block_no_error` method with a block. The method has been defined with `yield` and wrapped in a conditional with the `Kernel#block_given?` method to ensure Ruby does not raise a `LocalJumpError` in case the method is invoked without a block. However, since a block was passed to the method, `block_given?` returns `true` and `yield` is called. This executes the block code and outputs, `"Hello World!"` and returns `nil`. Next the `yield_with_block_no_error` method itself outputs, `"Goodnight World!"` and returns `nil`.
 
 <hr>
 
@@ -120,13 +120,13 @@ In the example above on line 6, we invoke the `yield_with_block_no_error` method
 <hr>
 
 ```ruby
-1 def greeting(name)
-2   yield if block_given?
-3   puts "How are ya #{name}!"
-4 end
+1  def greeting(name)
+2    yield if block_given?
+3    puts "How are ya #{name}!"
+4  end
 5
-6 name = "Tom"
-7 greeting(name) { puts "Hello there!"}
+6  name = "Tom"
+7  greeting(name) { puts "Hello there!"}
 ```
 
 In the example above, line 7 is the method invocation while lines 1-4 defines the method implementation.
@@ -146,20 +146,20 @@ Similar to methods, we can pass arguments to blocks. We do so by calling `yield`
 <hr>
 
 ```ruby
-1  def full_name(fname, lname)
-2    full_name = "#{fname} #{lname}"
-3    if block_given?
-4 	   yield(full_name)
-5    end
-6    full_name
-7  end
-8
-9  first_name = "Oscar"
-10 last_name = "Cortes"
+ 1  def full_name(fname, lname)
+ 2    full_name = "#{fname} #{lname}"
+ 3    if block_given?
+ 4 	   yield(full_name)
+ 5    end
+ 6    full_name
+ 7  end
+ 8
+ 9  first_name = "Oscar"
+10  last_name = "Cortes"
 11
-12 full_name(first_name, last_name) do |name|
-13   puts "#{name}"
-14 end
+12  full_name(first_name, last_name) do |name|
+13    puts "#{name}"
+14  end
 ```
 
 1.  Execution starts at method invocation, on line 12. The `full_name` method is invoked with three arguments: two strings referenced by `first_name` and `last_name`, and a block. The block is not part of the method definition and therefore is an implicit parameter.
@@ -184,34 +184,34 @@ Unlike `methods`, and `lambdas` which have have `strict arity`, `blocks` and `pr
 <hr>
 
 ```ruby
-1 def passing_exta_args_to_block
-2   yield("one", "two")
-3 end
-4
-5 passing_extra_args_to_block do |block_param1|
-6  puts "#{block_param1}"
-7 end
+def passing_exta_args_to_block
+  yield("one", "two")
+end
+
+passing_extra_args_to_block do |block_param1|
+  puts "#{block_param1}"
+nd
 ```
 
 In the example above, we invoke the `passing_extra_args_to_block` method with a block. The block is not part of the method definition and therefore is an implicit parameter.
 
-On line 2 we `yield` to the block with two arguments. Although the block has been defined with only one block parameter, ruby does not raise an `ArgumentError`. Instead the extra argument passed to the block is ignored and the code outputs `one`.
+Within the method we `yield` to the block with two arguments. Although the block has been defined with only one block parameter, ruby does not raise an `ArgumentError`. Instead the extra argument passed to the block is ignored and the code outputs `one`.
 
 <hr>
 
 ```ruby
-1 def passing_less_args_to_block
-2   yield("one")
-4 end
-5
-6 passing_less_args_to_block do |block_param1, block_param2|
-7   puts "#{block_param1} #{block_param2}"
-8 end
+def passing_less_args_to_block
+  yield("one")
+end
+
+passing_less_args_to_block do |block_param1, block_param2|
+  puts "#{block_param1} #{block_param2}"
+end
 ```
 
 In the example above, we invoke the `passing_less_args_to_block` method with a block. The block is not part of the method definition and therefore is an implicit parameter.
 
-On line 2 we `yield` to the block with one argument. Although the block has been defined with with two block parameters, ruby does not raise an `ArgumentError`. Instead the block local variable `block_param2` referenced on line 7 is `nil`. The string interpolation converts `nil` to an empty string and the code outputs the string `one ` containing an empty space at the end.
+Within the method, we `yield` to the block with one argument. Although the block has been defined with with two block parameters, ruby does not raise an `ArgumentError`. Instead the block local variable `block_param2` references `nil`. The string interpolation converts `nil` to an empty string and the code outputs the string `one` containing an empty space at the end.
 
 <hr>
 
@@ -222,25 +222,89 @@ Similar to methods, blocks can return a value or mutate the passed-in argument w
 <hr>
 
 ```ruby
-1  def block_demo(arr)
-2     block_return_value = yield(arr)
-3     puts "The block's return value is: #{block_return_value}"
-4  end
-5
-6  alpha = ['a', 'b', 'c']
-7
-8  non_mutating(alpha) { |list| list.first }
-9  end
+def block_demo(arr)
+   block_return_value = yield(arr)
+   puts "The block's return value is: #{block_return_value}"
+end
+
+alpha = ['a', 'b', 'c']
+
+non_mutating(alpha) { |list| list.first }
+end
 ```
 
-On line 2 in the example above, we call `yield` with an argument which yields to the block and executes the block code. Since `list.first` is the last evaluated expression within the block, the block returns `a`. Within the `block_demo` method, the local variable `block_return_value` is assigned to the block's return value and now references `a`. We use string interpoloation and include `block_return_value` to output, `"The block's return value is: a"`.
+In the example above, we call `yield` with an argument which yields to the block and executes the block code. Since `list.first` is the last evaluated expression within the block, the block returns `a`. Within the `block_demo` method, the local variable `block_return_value` is assigned to the block's return value and now references `a`. We use string interpoloation and include `block_return_value` to output, `"The block's return value is: a"`.
 
 <hr>
 
 ### When to use blocks in your own Methods
 
-Two main uses cases for blocks are:
+#### There are two main uses cases for blocks.
 
 1. To defer some implementation code to the method invocation decision.
 
+   When the method implmementor (developer) is unsure how exactly a method may be called, the method implementor can leave some of the specific details out of the method implementation.
+
+   By doing so, we can leave the decision of how best to implement specific details to the method caller (could be same person/developer) when the method is invoked.
+
+   This allows the method caller the ability to inject additional code into the method by passing in a block of code as an argument to the method, all without altering the original method implementation for other users.
+
+   Many of the methods in the Ruby core library are useful precisely because they are built in a generic way which allows the method caller to refine the method through a block when the method is invoked. This helps reduce the number of methods that would have to be create and memorize in order to accomadate specific scenarios.
+
+   ```ruby
+   def calculate(num)
+     result = yield(num)
+     puts "The calculated result is: #{result}"
+   end
+
+   calculate(7) { |n| n + n }
+   calculate(7) { |n| n * n }
+   ```
+
 2. Method that need to perform some "before" and "after" actions - sandwich code.
+
+   There are times when we want to write some generic method that peforms some `before` and `after` action. One example is tracking the `start time` and `end time` in order to `time` how long a process takes to execute. Another example is `opening` and `closing` a file while processing its contents.
+
+   This is a good use case for using blocks in our methods.
+
+   When writing this type of method implementation known as `sandwich code`, the method implementor does care about the specific details of the block of code that is executed `between` the `before` and `after` actions defined in the method. Insted, the method implementor can defer implemention over to the method caller at method invocation time.
+
+   ```ruby
+   def elapsed_time
+     start_time = Time.now
+     yield if block_given?
+     end_time = Time.now
+
+     delta = end_time - start_time
+     puts "The process took #{delta} seconds."
+   end
+
+   elapsed_time { sleep(1.5) }
+   elapsed_time { sleep(2) }
+   ```
+
+  <hr>
+
+### Methods with an explicit parameter
+
+Regardless of whether or not a method uses or ingores a passed-in block argument, in Ruby, every method can accept a block as an implicit parameter.
+
+A block however, can also be passed to a method explicitly. This is referred to as an explicit block.
+
+Unlike an `implicit` block, an `explicit` block is assigned to a method parameter so that it can be manage like any other object.
+
+Where as we can only `yield` to an `implicit` block, with explicit blocks, the method parameter serves as a handle (a variable) that we can use to reassign, pass to other methods, and invoked many times.
+
+This differs from an `explicit` block since we can only assign the return value of yielding to an `implicit` block and not the block itself.
+
+To define an explicit block, you add a parameter to the method definition where the name begins with a `&` character. This is a special parameter that converts the block argument to a simple `Proc` object.
+
+Inside the method, you can reference the parameter without the `&`. In cases where a method is defined with more than one parameter, the parameter with the `&` character must be the last parameter defined for the method.
+
+<hr>
+
+### Using Closures
+
+<hr>
+
+### Summary
