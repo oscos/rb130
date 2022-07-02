@@ -217,7 +217,7 @@ Within the method, we `yield` to the block with one argument. Although the block
 
 ### Return value of yielding to the block
 
-Similar to methods, blocks can return a value or mutate the passed-in argument with a destructive method. The return value of a block is based on the last evaluated expression within the block and can be assigned to a local variable within the method.
+Similar to methods, blocks can return a value or mutate the passed-in argument with a destructive method. The return value of a block is based on the last evaluated expression within the block and can be assigned to a local variable.
 
 <hr>
 
@@ -251,6 +251,8 @@ In the example above, we call `yield` with an argument which yields to the block
 
    Many of the methods in the Ruby core library are useful precisely because they are built in a generic way which allows the method caller to refine the method through a block when the method is invoked. This helps reduce the number of methods that would have to be create and memorize in order to accomadate specific scenarios.
 
+   <hr>
+
    ```ruby
    def calculate(num)
      result = yield(num)
@@ -261,6 +263,8 @@ In the example above, we call `yield` with an argument which yields to the block
    calculate(7) { |n| n * n }
    ```
 
+   <hr>
+
 2. Method that need to perform some "before" and "after" actions - sandwich code.
 
    There are times when we want to write some generic method that peforms some `before` and `after` action. One example is tracking the `start time` and `end time` in order to `time` how long a process takes to execute. Another example is `opening` and `closing` a file while processing its contents.
@@ -268,6 +272,8 @@ In the example above, we call `yield` with an argument which yields to the block
    This is a good use case for using blocks in our methods.
 
    When writing this type of method implementation known as `sandwich code`, the method implementor does care about the specific details of the block of code that is executed `between` the `before` and `after` actions defined in the method. Insted, the method implementor can defer implemention over to the method caller at method invocation time.
+
+   <hr>
 
    ```ruby
    def elapsed_time
@@ -301,6 +307,8 @@ To define an explicit block, you add a parameter to the method definition where 
 
 Inside the method, you can reference the parameter without the `&`. In cases where a method is defined with more than one parameter, the parameter with the `&` character must be the last parameter defined for the method.
 
+<hr>
+
 ```ruby
 def explicit_block_to_proc(&block_to_proc)
   block_to_proc
@@ -309,16 +317,65 @@ end
 p explicit_block_to_proc { 3 * 5 }  #<Proc:0x0000557e82ab9360@main.rb:5>
 ```
 
-In the example above, the `explicit_block_to_proc` method is invoked with a block as an argument. Since the block is part of the method definition, it is an `explicit` block, and is assigned to the method parameter `&block` so that it can be manage like any other object.
+In the example above, the `explicit_block_to_proc` method is invoked with a block as an argument. Since the block is part of the method definition, it is an `explicit` block. It is assigned to the method parameter `&block` so that it can be manage like any other object.
 
 The `&block` parameter converts the block to a simple `proc` object. Inside the method, we reference the `proc` object using its variable name `block_to_proc`, which drops the `&` from the parameter name. We can now reasign, pass to other methods, or invoke it.
 
-Notice that invoking the `explicit_block_to_proc` method returns the proc object `#<Proc:0x0000557e82ab9360@main.rb:5>`
+While we can't return a block in Ruby, we can however return a `Proc` object. Thus when we invoke the `explicit_block_to_proc` method, its return value is the `Proc` object `#<Proc:0x0000557e82ab9360@main.rb:5>`.
 
 <hr>
+
+# @TODO: Add another example with calling the proc block.call
 
 ### Using Closures
 
+In Ruby, we can create a closure by using `blocks`, creating `Proc` objects, and `lambda`'s
+
+Because closures retain access to their surrounding scope of where and when they are created, they can use and update variables in that scope when they are executed, even if the closure is called from a different scope.
+
+```ruby
+def letter_concat(arr)
+  arr.each { |el| yield(el) }
+end
+
+arr = %w(a b c d e)
+results = []
+
+letter_concat(arr) do |letter|
+  if results.empty?
+      results << letter
+  else
+    concat = results[-1] + letter
+    results << concat
+  end
+end
+
+p results
+```
+
+In the example above, we invoke the `letter_concat` method with a block. The block is not part of the method definition and is an implicit parameter.
+
+Within `letter_concat`, `yield` executes the block. Even thought the block is executed in a different location from where it was defined, the block can still access the `results` array through the closure.
+
 <hr>
+
+Although in Ruby, we can't return blocks, both methods and blocks have the ability to each return a closure
+
+```ruby
+  def pop_off
+    arr = [1,2,3,4,5]
+    Proc.new { arr.pop }
+  end
+
+  n1 = pop_off
+  p n1.call # => 5
+  p n1.call # => 4
+  puts
+  n2 = pop_off
+  p n2.call # => 5
+  p n2.call # => 4
+  puts
+  p n1.call # => 3
+```
 
 ### Summary
