@@ -291,15 +291,29 @@ Regardless of whether or not a method uses or ingores a passed-in block argument
 
 A block however, can also be passed to a method explicitly. This is referred to as an explicit block.
 
-Unlike an `implicit` block, an `explicit` block is assigned to a method parameter so that it can be manage like any other object.
+Unlike an `implicit` block, an `explicit` block is part of the method definition and is assigned to a method parameter so that it can be manage like any other object.
 
-Where as we can only `yield` to an `implicit` block, with explicit blocks, the method parameter serves as a handle (a variable) that we can use to reassign, pass to other methods, and invoked many times.
+While we can only `yield` to an `implicit` block, with explicit blocks, the method parameter serves as a handle (a variable) that we can use to reassign, pass to other methods, and invoked many times.
 
 This differs from an `explicit` block since we can only assign the return value of yielding to an `implicit` block and not the block itself.
 
 To define an explicit block, you add a parameter to the method definition where the name begins with a `&` character. This is a special parameter that converts the block argument to a simple `Proc` object.
 
 Inside the method, you can reference the parameter without the `&`. In cases where a method is defined with more than one parameter, the parameter with the `&` character must be the last parameter defined for the method.
+
+```ruby
+def explicit_block_to_proc(&block_to_proc)
+  block_to_proc
+end
+
+p explicit_block_to_proc { 3 * 5 }  #<Proc:0x0000557e82ab9360@main.rb:5>
+```
+
+In the example above, the `explicit_block_to_proc` is invoked with an `explicit` block as an argument since it is assigned to the method parameter `&block` so that it can be manage like any other object.
+
+The `&block` parameter converts the block to a simple `proc` object. Inside the method, we reference the `proc` object using its variable name `block_to_proc`, which drops the `&` from the parameter name. We can now reasign, pass to other methods, or invoke it.
+
+Notice that invoking the `explicit_block_to_proc` method returns the proc object `#<Proc:0x0000557e82ab9360@main.rb:5>`
 
 <hr>
 
