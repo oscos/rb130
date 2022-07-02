@@ -309,7 +309,7 @@ end
 p explicit_block_to_proc { 3 * 5 }  #<Proc:0x0000557e82ab9360@main.rb:5>
 ```
 
-In the example above, the `explicit_block_to_proc` is invoked with an `explicit` block as an argument since it is assigned to the method parameter `&block` so that it can be manage like any other object.
+In the example above, the `explicit_block_to_proc` is invoked with an `explicit` block as an argument since it is part of the method definition and is assigned to the method parameter `&block` so that it can be manage like any other object.
 
 The `&block` parameter converts the block to a simple `proc` object. Inside the method, we reference the `proc` object using its variable name `block_to_proc`, which drops the `&` from the parameter name. We can now reasign, pass to other methods, or invoke it.
 
