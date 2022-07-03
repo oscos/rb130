@@ -19,6 +19,11 @@ end
 #   end
 # end
 
+# solution added 07/03/2022
+(1..num).select do |n|
+  num % n == 0
+end
+
 p divisors(1) == [1]
 p divisors(7) == [1, 7]
 p divisors(12) == [1, 2, 3, 4, 6, 12]
