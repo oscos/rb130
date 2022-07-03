@@ -33,24 +33,6 @@ def rot13(str)
 end
 
 # additional solution added 07/03/2022
-UPPERCASE = ('A'..'Z').to_a * 2
-LOWERCASE = ('a'..'z').to_a * 2
-
-def decrypt(chr)
-  if UPPERCASE.include?(chr)
-    UPPERCASE[UPPERCASE.index(chr) + 13]
-  elsif LOWERCASE.include?(chr)
-    LOWERCASE[LOWERCASE.index(chr) + 13]
-  else
-    chr
-  end
-end
-
-def rot13(str)
-  str.chars.map { |chr| decrypt(chr) }.join
-end
-
-# additional solution added 07/03/2022
 LETTERS = ('A'..'Z').to_a * 2
 
 def decrypt(chr)
