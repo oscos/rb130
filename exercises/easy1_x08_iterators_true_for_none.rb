@@ -5,6 +5,11 @@ def none?(arr)
   true
 end
 
+# new solution added 07/03/2022
+def none?(arr)
+  arr.reject { |n| return false if yield(n) }.size == arr.size
+end
+
 p none?([1, 3, 5, 6]) { |value| value.even? } == false
 p none?([1, 3, 5, 7]) { |value| value.even? } == true
 p none?([2, 4, 6, 8]) { |value| value.odd? } == true
