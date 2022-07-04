@@ -9,7 +9,17 @@ def one?(arr)
   counter == 1
 end
 
-one?([1, 3, 5, 7]) { |value| false } 
+# new solution added 07/03/2022
+def one?(arr)
+  result = []
+  
+  arr.each do |n|
+    return false if result.size > 1
+    result << yield(n) if yield(n)
+  end
+
+  result.size == 1
+end
 
 p one?([1, 3, 5, 6]) { |value| value.even? }    == true
 p one?([1, 3, 5, 7]) { |value| value.odd? }     == false
