@@ -29,7 +29,18 @@ end
 # NOTE: Passing in only an array with 2 element as paramter
 #       block paramters makes use of multiple assignment
 def each_cons(arr)
-  arr.each.with_index do |num, idx|
+  arr.each.with_index do |_, idx|
+    yield(arr[idx..idx + 1]) unless idx + 1 == arr.size
+  end
+
+  nil
+end
+
+# added solution 07/05/2022
+# NOTE: Passing in only an array with 2 element as paramter
+#       block paramters makes use of multiple assignment
+def each_cons(arr)
+  arr.size.times do |idx|
     yield(arr[idx..idx + 1]) unless idx + 1 == arr.size
   end
 
