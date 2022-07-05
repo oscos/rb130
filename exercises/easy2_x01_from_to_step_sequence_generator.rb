@@ -1,6 +1,6 @@
 =begin
 Launch School: RB130 - Ruby Foundations: More Topics > Easy 2 > From-To-Step Sequence Generator
-ExerciseName: [Zipper](https://launchschool.com/exercises/ec8dd514)
+ExerciseName: [From-To-Step Sequence Generator](https://launchschool.com/exercises/ec8dd514)
 FileName: easy2_x01_from_to_step_sequence_generator.rb
 Answered On: 12/27/2021
 =end
