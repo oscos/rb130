@@ -34,4 +34,19 @@ def step2(txt_start, txt_end, txt_step)
   end
 end
 
+# new solution added 07/04/2022
+# solution includes return value similar to actual Range#step method.
+def step(start, stop, step)
+  result = []
+
+  loop do
+    break if start > stop
+    yield(start)
+    result << start
+    start += step
+  end
+
+  result
+end
+
 step2(1, 10, 3) { |value| puts "value = #{value}" }
