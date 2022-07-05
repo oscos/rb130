@@ -43,6 +43,16 @@ def each_cons(arr, n)
   nil
 end
 
+# answer added 07/05/2022
+def each_cons(arr, n)
+  arr.each.with_index do |_, idx|
+    yield(*arr[idx..idx + (n - 1)]) if idx + (n - 1) < arr.size
+  end
+
+  nil
+end
+
+
 hash = {}
 each_cons([1, 3, 6, 10], 1) do |value|
   hash[value] = true
