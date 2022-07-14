@@ -6,9 +6,9 @@ A closure is a general programming concept that allows programmers to save a chu
 
 It’s called a closure because it binds the surrounding artifacts that were in scope at the time and location of where and when the closure was created. Thus forming an enclosure around everything so that the artifacts can be referenced when the closure is executed later.
 
-The references or access that a closure retains to these artifacts or in-scope items is known as its binding. The binding includes things like variables, methods, and objects.
+The references or access that a closure retains to these artifacts or in-scope items is known as its binding. These in-scope items include things like variables, methods, and objects.
 
-Because the closure drags around its context or environment, it can access the artifacts that are part of its binding when it’s later executed in a different scope such as when you pass it to a method.
+Because a closure must keep track of its binding it drags around its context or environment. This way it can access the artifacts that are part of its binding when it’s later executed in a different scope such as when you pass it to a method.
 
 In Ruby there are three ways to implement a closure:
 
@@ -24,7 +24,6 @@ In Ruby every method takes a block as an implicit parameter. However, a method's
 
 ```ruby
 [1, 2, 3, 4, 5].select {|n| n % 2 == 0 }
-
 ```
 
 The code above is an example of a method invocation with a block. The Array object `[1, 2, 3, 4, 5]` is the calling object. The `Array#select` is the method being invoked. The `{|n| n % 2 == 0 }` is the block (chunk of code) which is passed as an argument to the `Array#select` method.
@@ -378,4 +377,100 @@ Although in Ruby, we can't return blocks, both methods and blocks have the abili
   p n1.call # => 3
 ```
 
-### Summary
+### Summary Writing Methods with Blocks
+
+- A closure is a way to pass around an unnamed `chunk of code` to be executed later.
+- A block is one way in which Ruby implements closures.
+- Similar to methods, blocks can take arguments.
+- Unlike methods which have `strict arity` and must be passed the correct number of arguments, blocks have `lenient arity`. This means Ruby won't raise an error if the wrong number of arguments are passed to a block.
+- Like methods, blocks also return a value.
+- One use case for blocks is to defer some implementation decisions when the method is invoked. This allows the `method caller` to refine a method at the time of invocation for a specific use case. It also allows the `method implementor` to write generic methods that can be used in more than one way.
+- A second use case for blocks is for sandwhich code scenarios. That is method that need to perform some before or after action.
+
+<hr>
+
+## Blocks and Variable Scope
+
+### Refresher
+
+Bindings and Closures are at the core of variable scoping rules in Ruby. It is why inner scope can access variables initialized in an outer scope.
+
+Since a block creates a new scope for local variables initialized inside the block, those local variables are not accesible outside the block.
+
+```ruby
+outside_var = "outside"
+
+1.times do
+  inside_var = 'inside'
+  puts outside_var # => outside
+end
+
+puts inside_var # Raises NameError:
+```
+
+In the example above, we invoke the the `times` method with a block. Since blocks can access and modify variables defined outside the block, it has access to the `outside_var` local variable. Thus when we reference `outside_var` from within the block, the code outputs the string `outside`.
+
+The `inside_var` however has been initialized inside the block. Since the block creates a new scope for local variables, `outside_var` is not accessible outside the block. Thus when we attempt to reference `outside_var` outside the block, Ruby raises an error.
+
+<hr>
+
+### Closure and binding
+
+A closure is a general programming concept that allows programmers to save a chunk of code that can later be executed.
+
+It’s called a closure because it binds the surrounding artifacts that were in scope at the time and location of where and when the closure was created. Thus forming an enclosure around everything so that the artifacts can be referenced when the closure is executed later.
+
+The references or access that a closure retains to these artifacts or in-scope items is known as its binding. These in-scope items include things like variables, methods, and objects.
+
+Because a closure must keep track of its binding it drags around its context or environment. This way it can access the artifacts that are part of its binding when it’s later executed in a different scope such as when you pass it to a method.
+
+In Ruby there are three ways to implement a closure:
+
+1. Creating an object from the Proc class
+2. Using Blocks
+3. Using Lambdas
+
+<hr>
+
+```ruby
+def a_method(greeting)
+  greeting.call
+end
+
+holiday = "Halloween"
+a_proc = Proc.new { puts "Happy #{holiday}!" }
+
+a_method(a_proc)
+```
+
+In the example above, we initialize the local variable `holiday` to the String, `"Halloween"`. We also create a `Proc` object and assign it to the `a_proc` local variable. Note that up to this point, we have not yet executed `a_proc`.
+
+We then invoke the method, `a_method`, and pass the `Proc` object referenced by `a_proc` as an argument which gets assigned to the `greeting` method parameter.
+
+Inside `a_method`, `a_proc` is executed by invoking the `Proc#call` method on the Proc object referenced by `greeting`. This outputs `"Halloween"` and returns `nil`.
+
+Since a closure keeps track of its binding or surrounding environment/context, `a_proc` retains access to `holiday` even though it was initialized outside the `a_method`. This is because `holiday` was defined before `a_proc` was instantiated and therefor is part of its binding.
+
+<hr>
+
+```ruby
+def a_method(greeting)
+  greeting.call
+end
+
+holiday = "Halloween"
+a_proc = Proc.new {puts "Happy #{holiday}!"}
+holiday = "Thanks Giving"
+
+a_method(a_proc)
+```
+
+In the example above, we initialize the local variable `holiday` to the String, `"Halloween"`. We also create a `Proc` object and assign it to the `a_proc` local variable. Next we reassign `holiday` to the String `Thanks Giving`. Note that up to this point, we have not yet executed `a_proc`.
+
+We then invoke the method, `a_method`, and pass the `Proc` object referenced by `a_proc` as an argument which gets assigned to the `greeting` method parameter.
+
+Inside `a_method`, `a_proc` is executed by invoking the `Proc#call` method on the Proc object referenced by `greeting`. This outputs `"Halloween"` and returns `nil`.
+
+Since a closure keeps track of its binding or surrounding environment/context, `a_proc` retains access to `holiday` even though it was initialized outside the `a_method`. This is because `holiday` was defined before `a_proc` was instantiated and therefor is part of its binding.
+
+Note that the Proc `a_proc` binds to the local variable `holiday` and not to the value that `holiday` references. Therefore even though `holiday` is reassigned after `a_proc` is defined, it is aware of the new value.
