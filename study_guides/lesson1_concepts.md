@@ -448,8 +448,8 @@ In the example above, we initialize the local variable `holiday` to the String, 
 
 We then invoke the method, `a_method`, and pass the `Proc` object referenced by `a_proc` as an argument which gets assigned to the `greeting` method parameter.
 
-Inside `a_method`, `a_proc` is executed by invoking the `Proc#call` method on the Proc object referenced by `greeting`. This outputs `"Halloween"` and returns `nil`.
+Inside `a_method`, `a_proc` is executed by invoking the `Proc#call` method on the Proc object referenced by `greeting`. This outputs `"Happy Thanks Giving!"` and returns `nil`.
 
-Since a closure keeps track of its binding or surrounding environment/context, `a_proc` retains access to `holiday` even though it was initialized outside the `a_method`. This is because `holiday` was defined before `a_proc` was instantiated and therefor is part of its binding.
+Since a closure keeps track of its binding or surrounding environment/context, `a_proc` retains access to `holiday` even though it was initialized outside the `a_method`. This is because `holiday` was defined before `a_proc` was instantiated and therefore is part of its binding.
 
 Note that the Proc `a_proc` binds to the local variable `holiday` and not to the value that `holiday` references. Therefore even though `holiday` is reassigned after `a_proc` is defined, it is aware of the new value.
