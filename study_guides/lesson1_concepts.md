@@ -410,7 +410,7 @@ puts inside_var # Raises NameError:
 
 In the example above, we invoke the the `times` method with a block. Since blocks can access and modify variables defined outside the block, it has access to the `outside_var` local variable. Thus when we reference `outside_var` from within the block, the code outputs the string `outside`.
 
-The `inside_var` however has been initialized inside the block. Since the block creates a new scope for local variables, `outside_var` is not accessible outside the block. Thus when we attempt to reference `outside_var` outside the block, Ruby raises an error.
+The `inside_var` however has been initialized inside the block. Since s block created a new scope for local variables, `inside_var` is not accessible outside the block. Thus when we attempt to reference `inside_var` outside the block, Ruby raises an error.
 
 <hr>
 
