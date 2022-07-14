@@ -438,27 +438,6 @@ def a_method(greeting)
 end
 
 holiday = "Halloween"
-a_proc = Proc.new { puts "Happy #{holiday}!" }
-
-a_method(a_proc)
-```
-
-In the example above, we initialize the local variable `holiday` to the String, `"Halloween"`. We also create a `Proc` object and assign it to the `a_proc` local variable. Note that up to this point, we have not yet executed `a_proc`.
-
-We then invoke the method, `a_method`, and pass the `Proc` object referenced by `a_proc` as an argument which gets assigned to the `greeting` method parameter.
-
-Inside `a_method`, `a_proc` is executed by invoking the `Proc#call` method on the Proc object referenced by `greeting`. This outputs `"Halloween"` and returns `nil`.
-
-Since a closure keeps track of its binding or surrounding environment/context, `a_proc` retains access to `holiday` even though it was initialized outside the `a_method`. This is because `holiday` was defined before `a_proc` was instantiated and therefor is part of its binding.
-
-<hr>
-
-```ruby
-def a_method(greeting)
-  greeting.call
-end
-
-holiday = "Halloween"
 a_proc = Proc.new {puts "Happy #{holiday}!"}
 holiday = "Thanks Giving"
 
