@@ -453,3 +453,27 @@ Inside `a_method`, `a_proc` is executed by invoking the `Proc#call` method on th
 Since a closure keeps track of its binding or surrounding environment/context, `a_proc` retains access to `holiday` even though it was initialized outside the `a_method`. This is because `holiday` was defined before `a_proc` was instantiated and therefore is part of its binding.
 
 Note that the Proc `a_proc` binds to the local variable `holiday` and not to the value that `holiday` references. Therefore even though `holiday` is reassigned after `a_proc` is defined, it is aware of the new value.
+
+<hr>
+
+### Symbol to proc
+
+When working with collections, Ruby provides a shortcut when calling certain methods with blocks. It does this by making use of the `Symbol#to_proc` method`.
+
+To understand how this works, we can look at how the `&` operator works at method invocation time.
+
+When the `&` operator is applied to an object, Ruby expects the object to be a `Proc` in order to covert it over to a block. If the object is not already a `Proc` object, Ruby tries to convert it by calling the `#to_proc` on the object. If it succeeds, Ruby proceeds to convert the `Proc` object over to a block. If the class for the object does not have a `#to_proc` method defined, Ruby will raise and error instead.
+
+<hr>
+
+```ruby
+# NOT using shortcut
+p [1, 2, 3, 4, 5].inject { |acc, num| acc + num } # => 15
+
+# Using symbol to proc shortcut
+p [1, 2, 3, 4, 5].inject(&:+) # => 15
+```
+
+In the code above, both examples return the same value `15`. However, the second example, makes use of the `Symbol#to_proc` method which converts `(&:+)` over to `{ |acc, num| acc + num }`. It does this by first converting the `:+` Symbol to a Proc object by using `Symbol#to_proc`. Ruby then proceeds to convert the Proc object over to the block `{ |acc, num| acc + num }`
+
+The `Symbol#to_proc` shortcut works with any collection method that takes a block so long as the method does not take an argument. For example we can not use the shortcut on the `Array#fetch` method because it requires an index number as an argument.
