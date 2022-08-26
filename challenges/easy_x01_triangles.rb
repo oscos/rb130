@@ -1,25 +1,28 @@
-def diamond(letter, delimiter=' ')
-  letters = ('A'..'Z').to_a
-  counter1 = letters.index(letter)
-  counter2 = 1
-  arr = letters[0..counter1]
-  top_arr = []
+class Triangle
+  attr_reader :sides
 
-  arr.map.with_index do |letter, idx|    
-    starting_pattern = delimiter * counter1 + letter
-    ending_pattern   = delimiter * counter2 + letter
+  def initialize(side1, side2, side3)
+    @sides = [side1, side2, side3]
+    raise ArgumentError.new if invalid?
+  end
 
-    top_arr << starting_pattern if idx == 0 
-    top_arr << starting_pattern + ending_pattern if idx > 0
-    
-    counter1 -= 1
-    counter2 += 2 if idx > 0
-  end  
-  
-  top_arr + top_arr.reverse[1..-1] # winner winner chicken dinner!
+  def kind
+    arr_count = sides.uniq.size
+
+    triangle_type = 
+      if arr_count == 3 then "scalene"
+      elsif arr_count == 2 then "isosceles"
+      else "equilateral"
+      end
+      
+    triangle_type
+  end
+
+  def invalid? 
+    sides.min <= 0 ||
+    sides[0] + sides[1] <= sides[2] ||
+    sides[1] + sides[2] <= sides[0] ||
+    sides[0] + sides[2] <= sides[1]
+  end
+
 end
-
-delimiter = '-'
-puts diamond('E')
-puts ""
-puts diamond('F',delimiter)
