@@ -9,20 +9,16 @@ class Triangle
   def kind
     arr_count = sides.uniq.size
 
-    triangle_type = 
-      if arr_count == 3 then "scalene"
-      elsif arr_count == 2 then "isosceles"
-      else "equilateral"
-      end
-      
-    triangle_type
+    if arr_count == 3 then "scalene"
+    elsif arr_count == 2 then "isosceles"
+    else "equilateral"
+    end
   end
 
   def invalid? 
     sides.min <= 0 ||
     sides[0] + sides[1] <= sides[2] ||
-    sides[1] + sides[2] <= sides[0] ||
+    sides[1] + sides[2] <=sides[0] ||
     sides[0] + sides[2] <= sides[1]
   end
-
 end
